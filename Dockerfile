@@ -24,9 +24,9 @@ USER $USER
 WORKDIR /home/$USER
 ADD https://git.alpinelinux.org/aports/plain/community/wayvnc/APKBUILD /home/$USER
 RUN abuild-keygen -a -n
+USER root
 RUN abuild checksum
 RUN abuild -r
-USER root
 RUN apk add --allow-untrusted /home/$USER/packages/home/$ARCH/wayvnc-0.2.0-r0.apk
 
 # Start wayvnc and payload(s) with sway
