@@ -197,5 +197,4 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 include /etc/sway/config.d/*
-exec firefox --kiosk https://freebsd.org
 exec wayvnc
