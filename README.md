@@ -19,11 +19,11 @@ $ podman run -e XDG_RUNTIME_DIR=/tmp \
              -p7023:7023 swayvnc
 ```
 
-## Run commands
+## Run Commands
 Run commands with swaymsg by using socat to put them on the network
 ```
 $ socat -v UNIX-LISTEN:/tmp/swayipc,fork TCP:$IP:7023
-$ SWAYSOCK=/tmp/swayipc swaymsg command exec firefox [URL]
+$ SWAYSOCK=/tmp/swayipc swaymsg command exec "firefox [URL]"
 ```
 
 ## Connect
