@@ -3,8 +3,12 @@ name: Docker Image CI
 on:
   push:
     branches: [ master ]
+    paths-ignore:
+      - '**.md'
   pull_request:
     branches: [ master ]
+    paths-ignore:
+      - '**.md'
 
 jobs:
 
@@ -12,7 +16,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag swayvnc:$(date +%s)
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v1
+
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v1
       with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
+       registry: ghcr.io
+       username: ${{ github.repository_owner }}
+       password: ${{ secrets.GHCR_TOKEN }}
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Build and push to ghcr
+      id: docker_build
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        tags: ghcr.io/bbusse/swayvnc:latest
+
+    - name: Image digest
+      run: echo ${{ steps.docker_build.outputs.digest }}
