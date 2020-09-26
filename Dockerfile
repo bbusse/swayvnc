@@ -5,6 +5,7 @@ ENV ARCH aarch64
 ENV USER vnc-user
 ENV USER_BUILD build
 ENV PKG_WAYVNC wayvnc-0.2.0-r0.apk
+ENV PKG_NEATVNC neatvnc-0.3.1-r0.apk
 ENV VNC_LISTEN_ADDRESS 0.0.0.0
 ENV VNC_PASS $(pwgen -yns 8 1)
 
@@ -12,7 +13,7 @@ RUN echo $'http://dl-cdn.alpinelinux.org/alpine/edge/community' >> /etc/apk/repo
 RUN apk update
 
 # Add packages
-RUN apk add --no-cache neatvnc firefox mesa-dri-swrast neatvnc openssl socat sway xkeyboard-config
+RUN apk add --no-cache firefox mesa-dri-swrast neatvnc openssl socat sway xkeyboard-config
 
 # Add fonts
 RUN apk add --no-cache msttcorefonts-installer fontconfig
@@ -22,6 +23,7 @@ RUN update-ms-fonts
 RUN addgroup -S $USER && adduser -S $USER -G $USER -G abuild
 
 COPY --from=ghcr.io/bbusse/swayvnc-build:latest /home/$USER_BUILD/packages/home/$ARCH/$PKG_WAYVNC /home/$USER/$PKG_WAYVNC
+COPY --from=ghcr.io/bbusse/swayvnc-build:latest /home/$USER_BUILD/$PKG_NEATVNC /home/$USER/$PKG_NEATVNC
 RUN apk add --allow-untrusted /home/$USER/$PKG_WAYVNC
 
 # Copy sway config
