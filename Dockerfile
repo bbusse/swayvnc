@@ -12,7 +12,7 @@ RUN echo $'http://dl-cdn.alpinelinux.org/alpine/edge/community' >> /etc/apk/repo
 RUN apk update
 
 # Add packages
-RUN apk add --no-cache sway mesa-dri-swrast xkeyboard-config neatvnc firefox socat
+RUN apk add --no-cache neatvnc firefox mesa-dri-swrast neatvnc openssl socat sway xkeyboard-config
 
 # Add fonts
 RUN apk add --no-cache msttcorefonts-installer fontconfig
@@ -35,8 +35,8 @@ RUN echo "address=$VNC_LISTEN_ADDRESS\
 enable_auth=true\
 username=$USER\
 password=$VNC_PASS\
-private_key_file=/path/to/key.pem\
-certificate_file=/path/to/cert.pem"
+private_key_file=/home/$USER/key.pem\
+certificate_file=/home/$USER/cert.pem"
 
 # Generate certificates vor VNC
 RUN openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes \
