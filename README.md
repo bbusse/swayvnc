@@ -17,8 +17,7 @@ Run container
 $ podman run -e XDG_RUNTIME_DIR=/tmp \
              -e WLR_BACKENDS=headless \
              -e WLR_LIBINPUT_NO_DEVICES=1 \
-             -e MOZ_ENABLE_WAYLAND=1 \
-             -e URL1 https://freebsd.org \
+             -e SWAYSOCK=/tmp/sway-ipc.sock
              -p5900:5900 \
              -p7023:7023 swayvnc
 ```
