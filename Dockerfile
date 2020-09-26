@@ -5,6 +5,8 @@ ENV ARCH aarch64
 ENV USER vnc-user
 ENV USER_BUILD build
 ENV PKG_WAYVNC wayvnc-0.2.0-r0.apk
+ENV VNC_LISTEN_ADDRESS 0.0.0.0
+ENV VNC_PASS $(pwgen -yns 8 1)
 
 RUN echo $'http://dl-cdn.alpinelinux.org/alpine/edge/community' >> /etc/apk/repositories
 RUN apk update
@@ -29,6 +31,17 @@ COPY config /etc/sway/config
 RUN mkdir /etc/sway/config.d
 RUN echo "exec wayvnc" >> /etc/sway/config.d/exec
 RUN echo "exec \"socat TCP-LISTEN:7023,fork UNIX-CONNECT:/tmp/sway-ipc.sock\"" >> /etc/sway/config.d/exec
+RUN echo "address=$VNC_LISTEN_ADDRESS\
+enable_auth=true\
+username=$USER\
+password=$VNC_PASS\
+private_key_file=/path/to/key.pem\
+certificate_file=/path/to/cert.pem"
+
+# Generate certificates vor VNC
+RUN openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes \
+	-keyout key.pem -out cert.pem -subj /CN=localhost \
+	-addext subjectAltName=DNS:localhost,DNS:localhost,IP:127.0.0.1
 
 # Add entrypoint
 USER $USER
