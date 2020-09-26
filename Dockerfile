@@ -14,7 +14,7 @@ RUN echo $'http://dl-cdn.alpinelinux.org/alpine/edge/community' >> /etc/apk/repo
 RUN apk update
 
 # Add packages
-RUN apk add --no-cache firefox mesa-dri-swrast neatvnc openssl socat sway xkeyboard-config
+RUN apk add --no-cache firefox mesa-dri-swrast openssl socat sway xkeyboard-config
 
 # Add fonts
 RUN apk add --no-cache msttcorefonts-installer fontconfig
