@@ -25,7 +25,7 @@ $ podman run -e XDG_RUNTIME_DIR=/tmp \
 
 ## Run Commands
 Run commands with swaymsg by using socat to put them on the network
-Replace $IP with the actual IP you wan to listen on
+Replace $IP with the actual IP you want to listen on
 ```
 $ socat UNIX-LISTEN:/tmp/swayipc,fork TCP:$IP:7023
 $ SWAYSOCK=/tmp/swayipc swaymsg command exec "firefox [URL]"
@@ -34,7 +34,9 @@ $ SWAYSOCK=/tmp/swayipc swaymsg command exec "firefox [URL]"
 ## Connect
 Use some vnc client to connect the server
 ```
-$ vinagre localhost:5900
+$ wlvncc vnc-server
+# or
+$ vinagre [vnc-server:5900]
 ```
 
 ## TODO
