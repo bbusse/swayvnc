@@ -2,11 +2,11 @@
 Uses [Sway](https://swaywm.org) with [wayvnc](https://github.com/any1/wayvnc) to create a headless wayland desktop with arbitrary payload, e.g. a web page
 
 ## Build
-# Build dependency
+### Build dependency
 Use [swayvnc-build](https://github.com/bbusse/swayvnc-build) to build the needed wayvnc apk  for alpine
 Follow the README and copy the resulting wayvnc package into the swayvnc directory
 
-# Build container
+### Build container
 ```
 $ podman build -t swayvnc .
 ```
