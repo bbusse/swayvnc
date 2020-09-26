@@ -3,8 +3,8 @@ Uses [Sway](https://swaywm.org) with [wayvnc](https://github.com/any1/wayvnc) to
 
 ## Build
 ### Build dependency
-Use [swayvnc-build](https://github.com/bbusse/swayvnc-build) to build the needed wayvnc apk  for alpine
-Follow the README and copy the resulting wayvnc package into the swayvnc directory
+Use [swayvnc-build](https://github.com/bbusse/swayvnc-build) to build the needed wayvnc apk for alpine
+The needed packages are getting copied from the swayvnc-build image with "COPY --from=" during the build of swayvnc
 
 ### Build container
 ```
@@ -14,12 +14,12 @@ $ podman build -t swayvnc .
 ## Run Container
 Run container
 ```
-$ podman run -e XDG_RUNTIME_DIR=/tmp \
+export LISTEN_ADDRESS="127.0.0.1"; podman run -e XDG_RUNTIME_DIR=/tmp \
              -e WLR_BACKENDS=headless \
              -e WLR_LIBINPUT_NO_DEVICES=1 \
              -e SWAYSOCK=/tmp/sway-ipc.sock
-             -p5900:5900 \
-             -p7023:7023 swayvnc
+             -p${LISTEN_ADDRESS}:5900:5900 \
+             -p${LISTEN_ADDRESS}:7023:7023 swayvnc
 ```
 
 ## Run Commands
