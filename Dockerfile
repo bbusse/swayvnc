@@ -36,7 +36,7 @@ enable_auth=true\
 username=$USER\
 password=$VNC_PASS\
 private_key_file=/home/$USER/key.pem\
-certificate_file=/home/$USER/cert.pem"
+certificate_file=/home/$USER/cert.pem" >> /etc/sway/config.d/wayvnc
 
 # Generate certificates vor VNC
 RUN openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes \
