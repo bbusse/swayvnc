@@ -3,6 +3,7 @@ FROM alpine:3.12
 # Tested with: x86_64 / aarch64
 ENV ARCH aarch64
 ENV USER vnc-user
+ENV USER_BUILD build
 ENV PKG_WAYVNC wayvnc-0.2.0-r0.apk
 
 RUN echo $'http://dl-cdn.alpinelinux.org/alpine/edge/community' >> /etc/apk/repositories
@@ -18,7 +19,7 @@ RUN update-ms-fonts
 # Add application user
 RUN addgroup -S $USER && adduser -S $USER -G $USER -G abuild
 
-COPY --from=swayvnc-builder:latest /home/$USER/$PKG_WAYVNC /home/$USER/$PKG_WAYVNC
+COPY --from=swayvnc-build:latest /home/$USER_BUILD/packages/home/$ARCH/$PKG_WAYVNC /home/$USER/$PKG_WAYVNC
 RUN apk add --allow-untrusted /home/$USER/$PKG_WAYVNC
 
 # Copy sway config
