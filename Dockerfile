@@ -31,12 +31,14 @@ COPY config /etc/sway/config
 RUN mkdir /etc/sway/config.d
 RUN echo "exec wayvnc" >> /etc/sway/config.d/exec
 RUN echo "exec \"socat TCP-LISTEN:7023,fork UNIX-CONNECT:/tmp/sway-ipc.sock\"" >> /etc/sway/config.d/exec
-RUN echo "address=$VNC_LISTEN_ADDRESS\
-enable_auth=true\
-username=$USER\
-password=$VNC_PASS\
-private_key_file=/home/$USER/key.pem\
-certificate_file=/home/$USER/cert.pem" >> /etc/sway/config.d/wayvnc
+RUN mkdir -p /home/$USER/.config/wayvnc/
+RUN printf "\
+address=$VNC_LISTEN_ADDRESS\n\
+enable_auth=false\n\
+username=$USER\n\
+password=$VNC_PASS\n\
+private_key_file=/home/$USER/key.pem\n\
+certificate_file=/home/$USER/cert.pem" > /home/$USER/.config/wayvnc/config
 
 # Generate certificates vor VNC
 RUN openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes \
