@@ -7,6 +7,7 @@ ENV USER_BUILD build
 ENV PKG_WAYVNC wayvnc-0.2.0-r0.apk
 ENV PKG_NEATVNC neatvnc-0.3.1-r0.apk
 ENV VNC_LISTEN_ADDRESS 0.0.0.0
+ENV VNC_AUTH_ENABLE false
 ENV VNC_PASS $(pwgen -yns 8 1)
 
 RUN echo $'http://dl-cdn.alpinelinux.org/alpine/edge/community' >> /etc/apk/repositories
@@ -36,7 +37,7 @@ RUN echo "exec \"socat TCP-LISTEN:7023,fork UNIX-CONNECT:/tmp/sway-ipc.sock\"" >
 RUN mkdir -p /home/$USER/.config/wayvnc/
 RUN printf "\
 address=$VNC_LISTEN_ADDRESS\n\
-enable_auth=false\n\
+enable_auth=$VNC_AUTH_ENABLE\n\
 username=$USER\n\
 password=$VNC_PASS\n\
 private_key_file=/home/$USER/key.pem\n\
