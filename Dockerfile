@@ -18,7 +18,7 @@ RUN update-ms-fonts
 # Add application user
 RUN addgroup -S $USER && adduser -S $USER -G $USER -G abuild
 
-COPY $PKG_WAYVNC /home/$USER/$PKG_WAYVNC
+COPY --from=swayvnc-builder:latest /home/$USER/$PKG_WAYVNC /home/$USER/$PKG_WAYVNC
 RUN apk add --allow-untrusted /home/$USER/$PKG_WAYVNC
 
 # Copy sway config
