@@ -1,7 +1,7 @@
 ARG ALPINE_VERSION=3.12
 FROM alpine:${ALPINE_VERSION}
 LABEL maintainer="Björn Busse <bj.rn@baerlin.eu>"
-LABEL org.opencontainers.image.source https://github.com/bbusseR/swayvnc
+LABEL org.opencontainers.image.source https://github.com/bbusse/swayvnc
 
 # Tested with: x86_64 / aarch64
 ENV ARCH="aarch64" \
