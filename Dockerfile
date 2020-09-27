@@ -6,7 +6,7 @@ LABEL maintainer="Björn Busse <bj.rn@baerlin.eu>"
 ENV ARCH="aarch64" \
     USER="vnc-user" \
     USER_BUILD="build" \
-    APK_ADD="firefox mesa-dri-swrast openssl socat sway xkeyboard-config" \
+    APK_ADD="mesa-dri-swrast openssl socat sway xkeyboard-config" \
     APK_DEL="bash curl" \
     PKG_WAYVNC="wayvnc-0.2.0-r0.apk" \
     PKG_NEATVNC="neatvnc-0.3.1-r0.apk" \
@@ -26,9 +26,10 @@ RUN apk add --no-cache $APK_ADD
 RUN apk add --no-cache msttcorefonts-installer fontconfig \
     && update-ms-fonts
 
-# Add application user and remove existing users
+# Add application user
 RUN addgroup -S $USER && adduser -S $USER -G $USER -G abuild
 
+# Copy and add (install) packages from build image
 COPY --from=ghcr.io/bbusse/swayvnc-build:latest /home/$USER_BUILD/packages/home/$ARCH/$PKG_WAYVNC /home/$USER/$PKG_WAYVNC
 COPY --from=ghcr.io/bbusse/swayvnc-build:latest /home/$USER_BUILD/$PKG_NEATVNC /home/$USER/$PKG_NEATVNC
 RUN apk add --no-cache --allow-untrusted /home/$USER/$PKG_WAYVNC
@@ -53,37 +54,6 @@ certificate_file=/home/$USER/$VNC_CERT" > /home/$USER/.config/wayvnc/config
 RUN openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes \
 	-keyout key.pem -out cert.pem -subj /CN=localhost \
 	-addext subjectAltName=DNS:localhost,DNS:localhost,IP:127.0.0.1
-
-# Cleanup
-RUN rm -rf \
-      /usr/share/man/* \
-      /usr/includes/* \
-      /var/cache/apk/* \
-    && apk del --no-cache ${APK_DEL} \
-    && deluser --remove-home daemon \
-    && deluser --remove-home adm \
-    && deluser --remove-home lp \
-    && deluser --remove-home sync \
-    && deluser --remove-home shutdown \
-    && deluser --remove-home halt \
-    && deluser --remove-home postmaster \
-    && deluser --remove-home cyrus \
-    && deluser --remove-home mail \
-    && deluser --remove-home news \
-    && deluser --remove-home uucp \
-    && deluser --remove-home operator \
-    && deluser --remove-home man \
-    && deluser --remove-home cron \
-    && deluser --remove-home ftp \
-    && deluser --remove-home sshd \
-    && deluser --remove-home at \
-    && deluser --remove-home squid \
-    && deluser --remove-home xfs \
-    && deluser --remove-home games \
-    && deluser --remove-home vpopmail \
-    && deluser --remove-home ntp \
-    && deluser --remove-home smmsp \
-    && deluser --remove-home guest
 
 # Add entrypoint
 USER $USER
