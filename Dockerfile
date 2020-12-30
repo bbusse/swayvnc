@@ -1,4 +1,5 @@
 ARG ALPINE_VERSION=3.12.3
+ARG NEATVNC_VERSION=0.4.0
 FROM alpine:${ALPINE_VERSION}
 LABEL maintainer="Björn Busse <bj.rn@baerlin.eu>"
 LABEL org.opencontainers.image.source https://github.com/bbusse/swayvnc
@@ -10,7 +11,7 @@ ENV ARCH="x86_64" \
     APK_ADD="mesa-dri-swrast openssl socat sway xkeyboard-config" \
     APK_DEL="bash curl" \
     PKG_WAYVNC="wayvnc-0.2.0-r0.apk" \
-    PKG_NEATVNC="neatvnc-0.3.1-r0.apk" \
+    PKG_NEATVNC="neatvnc-${NEATVNC_VERSION}-r0.apk" \
     VNC_LISTEN_ADDRESS="0.0.0.0" \
     VNC_AUTH_ENABLE="false" \
     VNC_KEYFILE="key.pem" \
