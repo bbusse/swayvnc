@@ -1,4 +1,4 @@
-ARG ALPINE_VERSION=3.12
+ARG ALPINE_VERSION=3.12.3
 FROM alpine:${ALPINE_VERSION}
 LABEL maintainer="Björn Busse <bj.rn@baerlin.eu>"
 LABEL org.opencontainers.image.source https://github.com/bbusse/swayvnc
