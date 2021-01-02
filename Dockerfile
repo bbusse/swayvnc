@@ -1,4 +1,4 @@
-ARG ALPINE_VERSION=latest
+ARG ALPINE_VERSION=edge
 ARG WAYVNC_VERSION=0.3.1
 ARG NEATVNC_VERSION=0.4.0
 FROM alpine:${ALPINE_VERSION}
@@ -23,7 +23,8 @@ ENV ARCH="x86_64" \
     VNC_PASS="$(pwgen -yns 8 1)"
 
 RUN echo $'http://dl-cdn.alpinelinux.org/alpine/edge/community' >> /etc/apk/repositories \
-    && apk update
+    && apk update \
+    && apk upgrade
 
 # Add packages
 RUN apk add --no-cache $APK_ADD
