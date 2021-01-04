@@ -197,4 +197,4 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 include /etc/sway/config.d/*
-exec wayvnc
+exec wayvnc ::1 5910
