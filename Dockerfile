@@ -1,5 +1,5 @@
 ARG ALPINE_VERSION=edge
-ARG WAYVNC_VERSION=0.5.0-r0
+ARG WAYVNC_VERSION=0.5.0
 ARG NEATVNC_VERSION=0.5.4
 FROM alpine:${ALPINE_VERSION}
 LABEL maintainer="Björn Busse <bj.rn@baerlin.eu>"
