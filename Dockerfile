@@ -22,6 +22,8 @@ ENV ARCH="x86_64" \
     VNC_CERT="cert.pem" \
     VNC_PASS="$(pwgen -yns 8 1)"
 
+RUN apk add -X https://dl-cdn.alpinelinux.org/alpine/v3.16/main -u alpine-keys
+
 RUN echo $'http://dl-cdn.alpinelinux.org/alpine/edge/community' >> /etc/apk/repositories \
     && apk update \
     && apk upgrade
