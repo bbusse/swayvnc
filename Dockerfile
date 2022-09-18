@@ -12,7 +12,7 @@ ARG NEATVNC_VERSION
 ENV ARCH="x86_64" \
     USER="vnc-user" \
     USER_BUILD="build" \
-    APK_ADD="mesa-dri-swrast openssl socat sway xkeyboard-config" \
+    APK_ADD="openssl socat sway xkeyboard-config" \
     APK_DEL="bash curl" \
     PKG_WAYVNC="wayvnc-${WAYVNC_VERSION}-r0.apk" \
     PKG_NEATVNC="neatvnc-${NEATVNC_VERSION}-r0.apk" \
