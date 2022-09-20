@@ -11,8 +11,9 @@ to get a better experience of how this works.
 $ podman build -t swayvnc .
 ```
 ### Build dependencies
-The container uses [swayvnc-build](https://github.com/bbusse/swayvnc-build) to build the needed wayvnc apk for alpine
-The needed packages are getting copied from the swayvnc-build image with "COPY --from=" during the build of swayvnc. You don't need to do this manually
+The container uses [swayvnc-build](https://github.com/bbusse/swayvnc-build) to build the needed wayvnc apk for alpine,
+since the packages are not available for all archs we want to support.
+They get copied from the swayvnc-build image with "COPY --from=" during the build of swayvnc
 
 ## Run Container
 ```
@@ -27,7 +28,7 @@ $ export LISTEN_ADDRESS="127.0.0.1"; \
 $ ./run.sh
 ```
 ## Connect
-Use some vnc client to connect the server
+Use some vnc client to connect to the server
 ```
 $ wlvncc <vnc-server>
 # or
