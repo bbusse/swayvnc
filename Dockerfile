@@ -5,6 +5,7 @@ FROM alpine:${ALPINE_VERSION}
 LABEL maintainer="Björn Busse <bj.rn@baerlin.eu>"
 LABEL org.opencontainers.image.source https://github.com/bbusse/swayvnc
 
+ARG ALPINE_VERSION
 ARG WAYVNC_VERSION
 ARG NEATVNC_VERSION
 
@@ -36,7 +37,7 @@ RUN apk add --no-cache msttcorefonts-installer fontconfig \
     && update-ms-fonts
 
 # Add application user
-RUN addgroup -S $USER && adduser -S $USER -G $USER -G abuild
+RUN addgroup -S $USER && adduser -S $USER -G $USER
 
 # Copy and add (install) packages from build image
 COPY --from=ghcr.io/bbusse/swayvnc-build:latest /home/$USER_BUILD/packages/home/$ARCH/$PKG_WAYVNC /home/$USER/$PKG_WAYVNC
@@ -89,7 +90,7 @@ password=$VNC_PASS\n\
 private_key_file=/home/$USER/$VNC_KEYFILE\n\
 certificate_file=/home/$USER/$VNC_CERT" > /home/$USER/.config/wayvnc/config
 
-# Generate certificates vor VNC
+# Generate certificates for VNC
 RUN openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes \
 	-keyout key.pem -out cert.pem -subj /CN=localhost \
 	-addext subjectAltName=DNS:localhost,DNS:localhost,IP:127.0.0.1
