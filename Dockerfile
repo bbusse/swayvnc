@@ -22,7 +22,7 @@ ENV ARCH="x86_64" \
     VNC_CERT="cert.pem" \
     VNC_PASS="$(pwgen -yns 8 1)"
 
-RUN apk add -X https://dl-cdn.alpinelinux.org/alpine/v3.16/main -u alpine-keys
+RUN apk add -X https://dl-cdn.alpinelinux.org/alpine/v3.16/main -u alpine-keys --allow-untrusted
 
 RUN echo $'http://dl-cdn.alpinelinux.org/alpine/edge/community' >> /etc/apk/repositories \
     && apk update \
@@ -42,6 +42,36 @@ RUN addgroup -S $USER && adduser -S $USER -G $USER -G abuild
 COPY --from=ghcr.io/bbusse/swayvnc-build:latest /home/$USER_BUILD/packages/home/$ARCH/$PKG_WAYVNC /home/$USER/$PKG_WAYVNC
 COPY --from=ghcr.io/bbusse/swayvnc-build:latest /home/$USER_BUILD/$PKG_NEATVNC /home/$USER/$PKG_NEATVNC
 RUN apk add --no-cache --allow-untrusted /home/$USER/$PKG_WAYVNC
+
+# Cleanup: Remove files and users
+RUN rm -rf \
+      /usr/share/man/* \
+      /usr/includes/* \
+      /var/cache/apk/* \
+    && deluser --remove-home daemon \
+    && deluser --remove-home adm \
+    && deluser --remove-home lp \
+    && deluser --remove-home sync \
+    && deluser --remove-home shutdown \
+    && deluser --remove-home halt \
+    && deluser --remove-home postmaster \
+    && deluser --remove-home cyrus \
+    && deluser --remove-home mail \
+    && deluser --remove-home news \
+    && deluser --remove-home uucp \
+    && deluser --remove-home operator \
+    && deluser --remove-home man \
+    && deluser --remove-home cron \
+    && deluser --remove-home ftp \
+    && deluser --remove-home sshd \
+    && deluser --remove-home at \
+    && deluser --remove-home squid \
+    && deluser --remove-home xfs \
+    && deluser --remove-home games \
+    && deluser --remove-home vpopmail \
+    && deluser --remove-home ntp \
+    && deluser --remove-home smmsp \
+    && deluser --remove-home guest
 
 # Copy sway config
 COPY config /etc/sway/config
