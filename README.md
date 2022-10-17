@@ -22,7 +22,7 @@ $ export LISTEN_ADDRESS="127.0.0.1"; \
                     -e WLR_BACKENDS=headless \
                     -e WLR_LIBINPUT_NO_DEVICES=1 \
                     -e SWAYSOCK=/tmp/sway-ipc.sock
-                    -p${LISTEN_ADDRESS}:5900:5900 \
+                    -p${LISTEN_ADDRESS}:5910:5910 \
                     -p${LISTEN_ADDRESS}:7023:7023 swayvnc
 # or
 $ ./run.sh
@@ -30,9 +30,9 @@ $ ./run.sh
 ## Connect
 Use some vnc client to connect to the server
 ```
-$ wlvncc <vnc-server>
+$ wlvncc <vnc-server> 5910
 # or
-$ vinagre [vnc-server:5900]
+$ vinagre [vnc-server:5910]
 ```
 ## Run Commands
 Run commands with swaymsg by using socat to put them on the network
