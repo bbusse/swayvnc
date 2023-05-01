@@ -1,14 +1,17 @@
-name: Docker Image CI
+name: Build Container Image
 
 on:
   push:
-    branches: [ main ]
     paths-ignore:
       - '**.md'
+    branches:
+      - '**'
   pull_request:
-    branches: [ main ]
     paths-ignore:
       - '**.md'
+    branches:
+      - '**'
+  workflow_dispatch:
 
 jobs:
 
@@ -34,7 +37,8 @@ jobs:
       id: docker_build
       uses: docker/build-push-action@v3
       with:
-        platforms: linux/amd64
+        platforms: linux/arm64, linux/amd64
+        file: Containerfile
         push: true
         tags: ghcr.io/bbusse/swayvnc:latest
 
