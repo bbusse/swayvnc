@@ -1,6 +1,6 @@
 ARG ALPINE_VERSION=edge
-ARG WAYVNC_VERSION=0.5.0
-ARG NEATVNC_VERSION=0.5.4
+ARG WAYVNC_VERSION=0.6.2-r0
+ARG NEATVNC_VERSION=0.6.0-r1
 FROM alpine:${ALPINE_VERSION}
 LABEL maintainer="Björn Busse <bj.rn@baerlin.eu>"
 LABEL org.opencontainers.image.source https://github.com/bbusse/swayvnc
@@ -15,8 +15,8 @@ ENV ARCH="x86_64" \
     USER_BUILD="build" \
     APK_ADD="openssl socat sway xkeyboard-config" \
     APK_DEL="bash curl" \
-    PKG_WAYVNC="wayvnc-${WAYVNC_VERSION}-r0.apk" \
-    PKG_NEATVNC="neatvnc-${NEATVNC_VERSION}-r0.apk" \
+    PKG_WAYVNC="wayvnc-${WAYVNC_VERSION}.apk" \
+    PKG_NEATVNC="neatvnc-${NEATVNC_VERSION}.apk" \
     VNC_LISTEN_ADDRESS="0.0.0.0" \
     VNC_AUTH_ENABLE="false" \
     VNC_KEYFILE="key.pem" \
@@ -33,14 +33,14 @@ RUN echo $'http://dl-cdn.alpinelinux.org/alpine/edge/community' >> /etc/apk/repo
 RUN apk add --no-cache $APK_ADD
 
 # Add fonts
-RUN apk add --no-cache msttcorefonts-installer fontconfig \
-    && update-ms-fonts
+#RUN apk add --no-cache msttcorefonts-installer fontconfig \
+#    && update-ms-fonts
 
 # Add application user
 RUN addgroup -S $USER && adduser -S $USER -G $USER
 
 # Copy and add (install) packages from build image
-COPY --from=ghcr.io/bbusse/swayvnc-build:latest /home/$USER_BUILD/packages/home/$ARCH/$PKG_WAYVNC /home/$USER/$PKG_WAYVNC
+COPY --from=ghcr.io/bbusse/swayvnc-build:latest /home/$USER_BUILD/$PKG_WAYVNC /home/$USER/$PKG_WAYVNC
 COPY --from=ghcr.io/bbusse/swayvnc-build:latest /home/$USER_BUILD/$PKG_NEATVNC /home/$USER/$PKG_NEATVNC
 RUN apk add --no-cache --allow-untrusted /home/$USER/$PKG_WAYVNC
 
