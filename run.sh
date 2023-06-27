@@ -40,8 +40,10 @@ fi
 ${executor} run -e XDG_RUNTIME_DIR=/tmp \
                 -e WLR_BACKENDS=headless \
                 -e WLR_LIBINPUT_NO_DEVICES=1 \
+                -e WLR_RENDERER=pixman \
                 -e SWAYSOCK=/tmp/sway-ipc.sock \
                 -p${LISTEN_ADDRESS}:5910:5910 \
                 -p${LISTEN_ADDRESS}:7000:7000 \
                 -p${LISTEN_ADDRESS}:7023:7023 \
+                --privileged \
                 ${CONTAINER}
