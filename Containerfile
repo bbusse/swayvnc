@@ -1,33 +1,21 @@
 ARG ALPINE_VERSION=edge
-ARG WAYVNC_VERSION=0.8.0-r0
-ARG NEATVNC_VERSION=0.8.1-r0
 FROM alpine:${ALPINE_VERSION}
 LABEL maintainer="Björn Busse <bj.rn@baerlin.eu>"
 LABEL org.opencontainers.image.source https://github.com/bbusse/swayvnc
 
 ARG ALPINE_VERSION
-ARG WAYVNC_VERSION
-ARG NEATVNC_VERSION
 
 # Tested with: x86_64 / aarch64
 ENV ARCH="x86_64" \
     USER="vnc-user" \
     USER_BUILD="build" \
-    APK_ADD="openssl socat sway xkeyboard-config" \
+    APK_ADD="openssl socat sway xkeyboard-config wayvnc" \
     APK_DEL="bash curl" \
-    PKG_WAYVNC="wayvnc-${WAYVNC_VERSION}.apk" \
-    PKG_NEATVNC="neatvnc-${NEATVNC_VERSION}.apk" \
     VNC_LISTEN_ADDRESS="0.0.0.0" \
     VNC_AUTH_ENABLE="false" \
     VNC_KEYFILE="key.pem" \
     VNC_CERT="cert.pem" \
     VNC_PASS="$(pwgen -yns 8 1)"
-
-RUN apk add -X https://dl-cdn.alpinelinux.org/alpine/v3.16/main -u alpine-keys --allow-untrusted
-
-RUN echo $'http://dl-cdn.alpinelinux.org/alpine/edge/community' >> /etc/apk/repositories \
-    && apk update \
-    && apk upgrade
 
 # Add packages
 RUN apk add --no-cache $APK_ADD
@@ -38,11 +26,6 @@ RUN apk add --no-cache $APK_ADD
 
 # Add application user
 RUN addgroup -S $USER && adduser -S $USER -G $USER
-
-# Copy and add (install) packages from build image
-COPY --from=ghcr.io/bbusse/swayvnc-build:latest /home/$USER_BUILD/$PKG_WAYVNC /home/$USER/$PKG_WAYVNC
-COPY --from=ghcr.io/bbusse/swayvnc-build:latest /home/$USER_BUILD/$PKG_NEATVNC /home/$USER/$PKG_NEATVNC
-RUN apk add --no-cache --allow-untrusted /home/$USER/$PKG_WAYVNC
 
 # Copy sway config
 COPY config /etc/sway/config
