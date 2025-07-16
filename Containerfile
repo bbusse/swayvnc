@@ -21,6 +21,9 @@ ENV ARCH="x86_64" \
 RUN apk add --no-cache $APK_ADD
 
 # Add fonts
+# As recommended by https://wiki.alpinelinux.org/wiki/Fonts
+RUN apk add font-terminus font-inconsolata font-dejavu font-noto font-noto-cjk font-awesome font-noto-extra
+# Additionally add MS fonts
 #RUN apk add --no-cache msttcorefonts-installer fontconfig \
 #    && update-ms-fonts
 
