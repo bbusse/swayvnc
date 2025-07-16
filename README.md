@@ -41,3 +41,5 @@ Replace $IP with the actual IP you want to listen on
 $ socat UNIX-LISTEN:/tmp/swayipc,fork TCP:$IP:7023
 $ SWAYSOCK=/tmp/swayipc swaymsg command exec "firefox [URL]"
 ```
+## Notes
+If you want to optimise for size, fonts take around 200MB of space
