@@ -9,7 +9,7 @@ ARG ALPINE_VERSION
 ENV ARCH="x86_64" \
     USER="vnc-user" \
     USER_BUILD="build" \
-    APK_ADD="openssl socat sway xkeyboard-config wayvnc" \
+    APK_ADD="openssl socat sway xkeyboard-config wayvnc fontconfig freetype harfbuzz" \
     APK_DEL="bash curl" \
     VNC_LISTEN_ADDRESS="0.0.0.0" \
     VNC_AUTH_ENABLE="false" \
@@ -22,7 +22,8 @@ RUN apk add --no-cache $APK_ADD
 
 # Add fonts
 # As recommended by https://wiki.alpinelinux.org/wiki/Fonts
-RUN apk add font-terminus font-inconsolata font-dejavu font-noto font-noto-cjk font-awesome font-noto-extra
+RUN apk add font-terminus font-inconsolata font-dejavu font-noto font-noto-cjk font-awesome font-noto-extra \
+    && fc-cache -f
 # Additionally add MS fonts
 #RUN apk add --no-cache msttcorefonts-installer fontconfig \
 #    && update-ms-fonts
