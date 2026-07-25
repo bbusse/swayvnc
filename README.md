@@ -10,10 +10,6 @@ to get a better experience of how this works.
 ```
 $ podman build -t swayvnc .
 ```
-### Build dependencies
-The container uses [swayvnc-build](https://github.com/bbusse/swayvnc-build) to build the needed wayvnc apk for alpine,
-since the packages are not available for all archs we want to support.
-They get copied from the swayvnc-build image with "COPY --from=" during the build of swayvnc
 
 ## Run Container
 ```
@@ -40,6 +36,14 @@ Replace $IP with the actual IP you want to listen on
 ```
 $ socat UNIX-LISTEN:/tmp/swayipc,fork TCP:$IP:7023
 $ SWAYSOCK=/tmp/swayipc swaymsg command exec "firefox [URL]"
+```
+## Tests
+Tests are written with [bash_unit](https://github.com/bash-unit/bash_unit) and exercise
+the built container end-to-end: a container is started and a real RFB (VNC) protocol
+handshake is performed against it to confirm a VNC client could actually open a session.
+```
+$ podman build -t swayvnc .
+$ bash_unit tests/test_vnc_session.sh
 ```
 ## Notes
 If you want to optimise for size, fonts take around 200MB of space
