@@ -1,0 +1,23 @@
+name: Test container
+
+on:
+  push:
+    paths-ignore:
+      - '**.md'
+    branches:
+      - '**'
+  pull_request:
+    paths-ignore:
+      - '**.md'
+    branches:
+      - '**'
+  workflow_dispatch:
+
+jobs:
+  test-bash-unit:
+    uses: bbusse/github-workflows/.github/workflows/run-tests-bash-unit.yml@dev
+    with:
+      test_files: tests/test_vnc_session.sh
+      install_klue_test_deps: false
+      build_container: true
+      container_image_name: swayvnc
