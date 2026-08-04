@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-export CONTAINER=swayvnc
+export CONTAINER=ghcr.io/bbusse/swayvnc
 export LISTEN_ADDRESS="[::1]"
 export VERBOSE=1
 
