@@ -8,6 +8,8 @@ export VERBOSE=1
 
 SCRIPT_NAME=$(basename $0)
 readonly SCRIPT_NAME
+COMMAND="${1:-run}"
+readonly COMMAND
 
 
 log() {
@@ -30,20 +32,32 @@ if [[ -z $(which podman) ]]; then
         exit 1
     else
         executor=docker
-        log "Using ${executor} to run ${CONTAINER}"
     fi
 else
     executor=podman
-    log "Using ${executor} to run ${CONTAINER}"
 fi
 
-${executor} run -e XDG_RUNTIME_DIR=/tmp \
-                -e WLR_BACKENDS=headless \
-                -e WLR_LIBINPUT_NO_DEVICES=1 \
-                -e WLR_RENDERER=pixman \
-                -e SWAYSOCK=/tmp/sway-ipc.sock \
-                -p${LISTEN_ADDRESS}:5910:5910 \
-                -p${LISTEN_ADDRESS}:7000:7000 \
-                -p${LISTEN_ADDRESS}:7023:7023 \
-                --privileged \
-                ${CONTAINER}
+case "${COMMAND}" in
+    build)
+        log "Building swayvnc with ${executor}"
+        ${executor} build -t swayvnc -f Containerfile .
+        ;;
+    run)
+        log "Using ${executor} to run ${CONTAINER}"
+        ${executor} run -e XDG_RUNTIME_DIR=/tmp \
+                        -e WLR_BACKENDS=headless \
+                        -e WLR_LIBINPUT_NO_DEVICES=1 \
+                        -e WLR_RENDERER=pixman \
+                        -e SWAYSOCK=/tmp/sway-ipc.sock \
+                        -p${LISTEN_ADDRESS}:5910:5910 \
+                        -p${LISTEN_ADDRESS}:7000:7000 \
+                        -p${LISTEN_ADDRESS}:7023:7023 \
+                        --privileged \
+                        ${CONTAINER}
+        ;;
+    *)
+        error "Unknown command: ${COMMAND}"
+        error "Usage: ${SCRIPT_NAME} [build|run]"
+        exit 1
+        ;;
+esac
