@@ -16,9 +16,8 @@ ENV USER="vnc-user" \
 # Add packages
 RUN apk add --no-cache $APK_ADD
 
-# Add fonts
-# As recommended by https://wiki.alpinelinux.org/wiki/Fonts
-RUN apk add font-terminus font-inconsolata font-dejavu font-noto font-noto-cjk font-awesome font-noto-extra \
+# Add fonts (font-noto-cjk/font-noto-extra excluded - not needed, ~100MB+)
+RUN apk add --no-cache font-terminus font-inconsolata font-dejavu font-noto font-awesome \
     && fc-cache -f
 # Additionally add MS fonts
 #RUN apk add --no-cache msttcorefonts-installer fontconfig \
